@@ -1,0 +1,9 @@
+<ng-container>
+  @if(isAuthenticated){
+  <button (click)="logout()">Log out</button>
+  <p>{{ auth.currentUser()?.name }}</p>
+  } @else{
+
+  <button (click)="login()">Log in</button>
+  }
+</ng-container>
