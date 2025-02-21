@@ -1,9 +1,9 @@
 <ng-container>
-  @if(isAuthenticated){
+  @if(auth.currentUser()){
   <button (click)="logout()">Log out</button>
   <p>{{ auth.currentUser()?.name }}</p>
   } @else{
 
-  <button (click)="login()">Log in</button>
+  <button (click)="googleLogin()">googleLogin in</button>
   }
 </ng-container>

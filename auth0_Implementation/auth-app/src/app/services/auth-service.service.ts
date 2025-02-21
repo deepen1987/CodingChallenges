@@ -1,35 +1,56 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { AuthService } from '@auth0/auth0-angular';
-import { User } from '../_models/user';
-import { tap } from 'rxjs';
+import {
+  Auth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signOut,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  User,
+  UserCredential,
+} from '@angular/fire/auth';
+
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthServiceService {
-  public auth: AuthService = inject(AuthService);
+  auth = inject(Auth);
   currentUser = signal<any>(null);
 
-  // Get authentication state
-  isAuthenticated$ = this.auth.isAuthenticated$;
-
-  // Get user profile
-  user$ = this.auth.user$;
-
-  constructor() {
-    this.auth.user$.pipe(tap((user) => this.currentUser.set(user))).subscribe();
-  }
-  // Login
-  login() {
-    this.auth.loginWithRedirect();
-  }
-
-  // Logout
-  logout() {
-    this.auth.logout({
-      logoutParams: {
-        returnTo: window.location.origin,
-      },
+  // 🔹 Google Login
+  async googleLogin() {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(this.auth, provider).then(() => {
+      this.setCurrentUser();
     });
+  }
+
+  // 🔹 Email/Password Login
+  async emailLogin(email: string, password: string) {
+    signInWithEmailAndPassword(this.auth, email, password).then(() => {
+      this.setCurrentUser();
+    });
+  }
+
+  // 🔹 Register with Email/Password
+  async signUp(email: string, password: string) {
+    createUserWithEmailAndPassword(this.auth, email, password).then(() => {
+      this.setCurrentUser();
+    });
+  }
+
+  // 🔹 Logout
+  async logout() {
+    signOut(this.auth).then(() => {
+      this.setCurrentUser();
+    });
+  }
+
+  setCurrentUser() {
+    // 🔹 Get current user
+    this.currentUser.set(this.auth.currentUser);
+    console.log(this.currentUser());
   }
 }

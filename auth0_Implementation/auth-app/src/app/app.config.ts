@@ -1,20 +1,26 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideAuth0 } from '@auth0/auth0-angular';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { environment } from '../environments/environment';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { environment } from '../environments/environment.development';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideAuth0({
-      domain: environment.auth0.domain,
-      clientId: environment.auth0.clientId,
-      authorizationParams: {
-        redirect_uri: environment.auth0.authorizationParams.redirect_uri,
-      },
-    }),
+    provideFirebaseApp(() =>
+      initializeApp({
+        projectId: environment.firebaseConfig.projectId,
+        appId: environment.firebaseConfig.appId,
+        storageBucket: environment.firebaseConfig.storageBucket,
+        apiKey: environment.firebaseConfig.apiKey,
+        authDomain: environment.firebaseConfig.authDomain,
+        messagingSenderId: environment.firebaseConfig.messagingSenderId,
+        measurementId: environment.firebaseConfig.measurementId,
+      })
+    ),
+    provideAuth(() => getAuth()),
   ],
 };

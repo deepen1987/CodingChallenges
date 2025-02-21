@@ -13,19 +13,11 @@ export class AuthButtonComponent implements OnInit {
   // Inject the authentication service into your component through the constructor
   public auth = inject(AuthServiceService);
   public document = inject(DOCUMENT);
-  public isAuthenticated: boolean = false;
 
-  ngOnInit() {
-    this.auth.user$.subscribe((user) => {
-      if (user) {
-        this.isAuthenticated = !!user;
-        console.log(user.name);
-      }
-    });
-  }
+  ngOnInit() {}
 
-  login() {
-    this.auth.login();
+  async googleLogin() {
+    await this.auth.googleLogin();
   }
   logout() {
     this.auth.logout();
