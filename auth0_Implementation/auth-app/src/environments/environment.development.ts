@@ -5,7 +5,7 @@ export const environment = {
     projectId: 'auth-app-77ca2',
     appId: '1:771983448025:web:64b2e78189eb5e8ec1ebc8',
     storageBucket: 'auth-app-77ca2.firebasestorage.app',
-    apiKey: 'AIzaSyCt_Z2CdToGMmBaPPKzszukMVJkEEy7vdk',
+    apiKey: '',
     authDomain: 'auth-app-77ca2.firebaseapp.com',
     messagingSenderId: '771983448025',
     measurementId: 'G-2DN6DG43YW',
