@@ -50,7 +50,9 @@ export class AuthServiceService {
 
   setCurrentUser() {
     // 🔹 Get current user
-    this.currentUser.set(this.auth.currentUser);
+    var user: any = this.auth.currentUser;
+    this.currentUser.set(user);
+    localStorage.setItem('Token', JSON.stringify(user.stsTokenManager));
     console.log(this.currentUser());
   }
 }
